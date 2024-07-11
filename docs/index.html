@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="MaskInversion: Localized Embeddings via Optimization of Explainability Maps">
+  <meta name="keywords" content="MaskInversion, Localization, Explainability, ViT, LLMs">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MaskInversion: Localized Embeddings via Optimization of Explainability Maps</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.css">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+<!--  <link rel="icon" href="./static/images/logo_legrad.png" style="border-radius: 100%;">-->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+<!--  MathJax: for inline equations-->
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<!--  MathJax loading-->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://walidbousselham.com/">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://github.com/WalBouss/GEM">
+            GEM (Grounding Everything Module)
+          </a>
+          <a class="navbar-item" href="https://walidbousselham.com/LeGrad">
+            LeGrad (Explainability method for ViTs)
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+<!--          <img src="./static/images/logo_legrad_5.png" style="width:20%;max-width:20%;object-fit: cover; border-radius: 50%;"/>-->
+          <h1 class="title is-1 publication-title">MaskInversion: Localized Embeddings via Optimization of Explainability Maps</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://walidbousselham.com/">Walid Bousselham</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="">Sofian Chaybouti</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://chrirupp.github.io/">Christian Rupprecht</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://sites.google.com/view/vittoferrari">Vittorio Ferrari</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://hildekuehne.github.io/">Hilde Kuehne</a><sup>1,4</sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>University of Bonn & Goethe University Frankfurt</span>
+            <span class="author-block"><sup>2</sup>University of Oxford</span>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>3</sup>Synthesia.io</span>
+            <span class="author-block"><sup>4</sup>MIT-IBM Watson AI Lab</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/WalBouss/MaskInversion"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+
+              <!-- HF Demo Link. -->
+<!--              <span class="link-block">-->
+<!--                <a href="https://huggingface.co/spaces/WalidBouss/LeGrad"-->
+<!--                   class="external-link button is-normal is-rounded is-dark">-->
+<!--                  <span class="icon">-->
+<!--&lt;!&ndash;                      <i class="fab fa-github"></i>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <i class="fa-regular fa-face-smiling-hands"></i>&ndash;&gt;-->
+<!--                    <img src="static/images/hf-logo.svg">-->
+<!--                  </span>-->
+<!--                  <span>Demo</span>-->
+<!--                  </a>-->
+<!--              </span>-->
+              <!-- Dataset Link. -->
+<!--              <span class="link-block">-->
+<!--                <a href="https://github.com/google/nerfies/releases/tag/0.1"-->
+<!--                   class="external-link button is-normal is-rounded is-dark">-->
+<!--                  <span class="icon">-->
+<!--                      <i class="far fa-images"></i>-->
+<!--                  </span>-->
+<!--                  <span>Data</span>-->
+<!--                  </a>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="./static/images/optim_steps.png" />
+      <h2 class="subtitle has-text-centered">
+         Given a mask, MaskInversion gradually focuses the "attention" of a vision model toward the area of the image covered by that mask.
+        </h2>
+    </div>
+  </div>
+</section>
+
+
+<!--<section class="hero is-light is-small">-->
+<!--  <div class="hero-body">-->
+<!--    <div class="container">-->
+<!--      <div id="results-carousel" class="carousel results-carousel">-->
+<!--        <div class="item item-steve">-->
+<!--          <img src="./static/images/teaser_figure_longer.png" />-->
+<!--&lt;!&ndash;          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">&ndash;&gt;-->
+<!--&lt;!&ndash;            <source src="./static/videos/steve.mp4"&ndash;&gt;-->
+<!--&lt;!&ndash;                    type="video/mp4">&ndash;&gt;-->
+<!--&lt;!&ndash;          </video>&ndash;&gt;-->
+<!--        </div>-->
+<!--        <div class="item item-chair-tp">-->
+<!--          <img src="./static/images/teaser_figure_longer.png" />-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</section>-->
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Vision-language foundation models such as CLIP have achieved tremendous results in global vision-language alignment, but still show some limitations in creating representations for specific image regions.
+          </p>
+          <p>
+            To address this problem, we propose <b>MaskInversion</b>, a method that leverages the feature representations of pre-trained foundation models, such as CLIP, to generate a context-aware embedding for a query image region specified by a mask at test time.
+            MaskInversion starts with initializing an embedding token and compares its explainability map, derived from the foundation model, to the query mask.
+            The embedding token is then subsequently refined to approximate the query region by minimizing the discrepancy between its explainability map and the query mask. During this process, only the embedding vector is updated, while the underlying foundation model is kept frozen allowing to use MaskInversion with any pre-trained model.
+            As deriving the explainability map involves computing its gradient, which can be expensive, we propose a gradient decomposition strategy that simplifies this computation.
+          </p>
+            <p>
+The learned region representation can be used for a broad range of tasks, including open-vocabulary class retrieval, referring expression comprehension, as well as for localized captioning and image generation. We evaluate the proposed method on all those tasks on several datasets such as PascalVOC, MSCOCO, RefCOCO, and OpenImagesV7 and show its capabilities compared to other SOTA approaches.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Paper Method. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Method</h2>
+        <div class="method-figure">
+          <img src="./static/images/method_figure.png" />
+        </div>
+        <h2 class="content has-text-justified">
+          <p>
+            The proposed method, coined as <b>MaskInversion</b>, aims to learn a localized embedding or feature vector that encapsulates an object’s characteristics within an image specified by a query mask. This embedding should not solely represent the object’s intrinsic properties but also capture the broader context of the entire image.
+          </p>
+          <p>
+            To achieve this, we utilize representations provided by foundation models, such as CLIP. Our approach learns a token that captures the foundation model’s feature representation on the image region specified by the mask. Hence, the foundation model remains fixed during our process.
+          </p>
+            As shown in the Figure above 👆, we start with the initialization of an embedding vector that serves as a localized embedding token of the mask. This vector is then refined through an iterative optimization process guided by an explainability map generated from the foundation model.
+            The explainability map provides a visual indication of the areas within the image that are most influential on the initial embedding, thereby allowing for targeted refinement.
+            The optimization process is supervised by enforcing the generated explainability map to be similar to the query mask.
+          </p>
+        </h2>
+      </div>
+    </div>
+    <!--/ Paper Method. -->
+    <!-- Paper Method: Faster Inversion. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Faster mask inversion via gradient decomposition</h2>
+        <div class="method-figure">
+          <img src="./static/images/fast_inversion.png" />
+        </div>
+        <h2 class="content has-text-justified">
+          <p>
+            The derivation of the explainability map necessitates the calculation of a gradient, and similarly, each gradient descent iteration requires the computation of a gradient with respect to the loss function <b>L</b>.
+            Consequently, this iterative process requires the evaluation of second-order derivatives of the form $\frac{\partial \textbf{L}}{\partial LET_\textbf{m}^{(k)}}(LET_\textbf{m}^{(k)}, \nabla \textbf{A})$, which can be computationally intensive and numerically unstable.
+          </p>
+          <p>
+            To enhance the computational efficiency of this process, it is advantageous to obviate the need for backpropagation to generate explainability maps at each iteration.
+            We propose a gradient decomposition strategy that simplifies the gradient computation associated with the explainability method.
+          </p>
+          <p>
+            The above figure 👆, shows that for high number of masks and/or high number of iterations, the proposed gradient decomposition strategy is significantly faster.
+          </p>
+
+        </h2>
+      </div>
+    </div>
+    <!--/ Paper Method: Faster Inversion -->
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop is-centered ">
+        <div class="content has-text-justified ">
+
+<!--      <div class="columns is-centered has-text-centered">-->
+<!--      <div class="column is-four-fifths">-->
+  <h2 class="title is-3 is-centered has-text-centered ">Results</h2>
+          <img src="./static/images/teaser_figure.png"
+                 class="interpolation-image"
+                 alt="Interpolation end reference image."/>
+          <p>
+            MaskInversion can be used for a diverse set of tasks, ranging from localized classification, captioning, image generation ...
+          </p>
+          <img src="./static/images/diffusion_captions.jpg"
+                 class="interpolation-image"
+                 alt="Interpolation end reference image."/>
+        <!-- Additional Localized Captions. -->
+        <h3 class="title is-4">Additional Localized Caption Examples</h3>
+            <img src="./static/images/localized_caption_supp_.png"
+                 class="interpolation-image"
+                 alt="Localized captions."/>
+           <!-- Additional Localized Captions. -->
+        <h3 class="title is-4">Additional Localized Diffusion Examples</h3>
+            <img src="./static/images/diffusion_supp.jpg"
+                 class="interpolation-image"
+                 alt="Localized diffusion."/>
+        <br/>
+        <!--/ Layers ablation. -->
+
+        <!--/ Qualitative Examples. -->
+
+    <!--/ Animation. -->
+<!--     -->
+  </div>
+    </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{bousselham2024maskinversion,
+  author    = {Bousselham, Walid and Chaybouti, Sofian and Rupprecht, Christian and Ferrari, Vittorio and Kuehne, Hilde}
+  title     = {MaskInversion: Localized Embeddings via Optimization of Explainability Maps},
+  journal   = {arXiv preprint arXiv:2407.xxxx},
+  year      = {2024},
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/videos/nerfies_paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This means you are free to borrow the <a
+              href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
+            we just ask that you link back to this page in the footer.
+            Please remember to remove the analytics code included in the header of the website which
+            you do not want on your website.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
