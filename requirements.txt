@@ -1,0 +1,10 @@
+torch>=1.11
+torchvision
+timm
+open_clip_torch
+legrad_torch
+opencv-python
+matplotlib
+numpy
+requests
+einops
