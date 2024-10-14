@@ -20,7 +20,7 @@ REQUIREMENTS = _read_reqs("requirements.txt")
 
 setup(
     name='maskinversion_torch',
-    version="1.0",
+    version="1.1",
     description='MaskInversion',
     long_description=long_description,
     long_description_content_type='text/markdown',
