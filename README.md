@@ -1,4 +1,4 @@
-# MaskInversion
+# MaskInversion [ICLR 2026]
 ### [MaskInversion: Localized Embeddings via Optimization of Explainability Maps](https://arxiv.org/abs/2407.20034)
 _[Walid Bousselham](http://walidbousselham.com/), [Sofian Chaybouti](https://scholar.google.com/citations?user=8tewdk4AAAAJ&hl),[Christian Rupprecht](https://chrirupp.github.io/), [Vittorio Ferrari](https://sites.google.com/view/vittoferrari), [Hilde Kuehne](https://hildekuehne.github.io/)_
 
@@ -160,9 +160,10 @@ This project also takes inspiration from [AlphaCLIP](https://github.com/SunzeY/A
 # :books: Citation
 If you find this repository useful, please consider citing our work :pencil: and giving a star :star2: :
 ```
-@article{bousselham2024maskinversion,
-  title={MaskInversion: Localized Embeddings via Optimization of Explainability Maps},
-  author={Walid Bousselham, Sofian Chaybouti, Christian Rupprecht, Vittorio Ferrari, Hilde Kuehne},
-  journal={arXiv preprint arXiv:2407.20034},
-  year={2024}
+@inproceedings{bousselham2026maskinversion,
+  author    = {Bousselham, Walid and Chaybouti, Sofian and Rupprecht, Christian and Ferrari, Vittorio and Kuehne, Hilde},
+  title     = {MaskInversion: Localized Embeddings via Optimization of Explainability Maps},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2026},
 }
+```
